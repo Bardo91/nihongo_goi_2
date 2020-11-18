@@ -1,8 +1,13 @@
 
-import 'dart:async';
+
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'package:path_provider/path_provider.dart';
 
 class KanjiEntry {
   final String kanji;
@@ -21,22 +26,39 @@ class VocabularyEntry {
 
 
 class Nihongogoi2Database{
-  Future<Database> databaseKanji_;
-  Future<Database> databaseVocabulary_;
 
-  Nihongogoi2Database(){
+  final int DATABASE_VERSION = 1;
+  final String DATABASE_NAME = "nihongo_goi_2.db";
+
+  Database database;
+
+  void open() async{
     WidgetsFlutterBinding.ensureInitialized();
-      // Open the database and store the reference.
 
-    databaseKanji_ = openDatabase('my_db.db');
+    final dbPath  = await getDatabasesPath();
+    final path = join(dbPath, DATABASE_NAME);
+
+    final exist = await databaseExists(path);
+
+    if(!exist){
+      try{
+        await Directory(dirname(path)).create(recursive: true);
+      }catch(_){}
+      ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
+
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes, flush: true);
+    }
+
+    database = await openDatabase(path);
   }
 
-  Future<List<KanjiEntry>> getAllKanjis() async {
+  List<KanjiEntry> getAllKanjis() {
     // Get a reference to the database.
-    final Database db = await databaseKanji_;
 
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('dogs');
+    List<Map<String, dynamic>> maps;
+    database.query('kanji').then((value) => maps);
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
@@ -48,12 +70,10 @@ class Nihongogoi2Database{
     });
   }
 
-  Future<List<VocabularyEntry>> getAllVocabulary() async {
-    // Get a reference to the database.
-    final Database db = await databaseKanji_;
-
+  List<VocabularyEntry> getAllVocabulary(){
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('dogs');
+    List<Map<String, dynamic>> maps;
+    database.query('dogs').then((value) => maps);
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {

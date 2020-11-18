@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nihongogoi2/KanjiScreen.dart';
 import 'package:nihongogoi2/TestScreen.dart';
 import 'package:nihongogoi2/VocabularyScreen.dart';
+import 'package:nihongogoi2/Nihongogoi2Database.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,9 +24,12 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  Nihongogoi2Database database = Nihongogoi2Database();
+
   BuildContext _context;
   @override
   Widget build(BuildContext context) {
+    database.open();
     _context = context;
     return Scaffold(
       appBar: AppBar(
