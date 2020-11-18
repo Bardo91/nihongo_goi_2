@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
   void _openKanjiScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => KanjiScreen()),
+      MaterialPageRoute(builder: (context) => KanjiScreen(database.getAllKanjis())),
     );
 
   }

@@ -16,6 +16,6 @@ class VocabularyScreen extends StatelessWidget {
         ],
       ),
     );
-
   }
+
 }

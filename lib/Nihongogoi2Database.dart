@@ -53,12 +53,11 @@ class Nihongogoi2Database{
     database = await openDatabase(path);
   }
 
-  List<KanjiEntry> getAllKanjis() {
+  Future<List<KanjiEntry>> getAllKanjis() async{
     // Get a reference to the database.
 
     // Query the table for all The Dogs.
-    List<Map<String, dynamic>> maps;
-    database.query('kanji').then((value) => maps);
+    final  List<Map<String, dynamic>> maps = await database.query('kanji');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
