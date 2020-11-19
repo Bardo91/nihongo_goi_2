@@ -74,14 +74,14 @@ class HomePage extends StatelessWidget {
   void _openVocabularyScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => VocabularyScreen()),
+      MaterialPageRoute(builder: (context) => VocabularyScreen(database.getAllVocabulary())),
     );
   }
 
   void _openTestScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => TestScreen()),
+      MaterialPageRoute(builder: (context) => TestScreen(database.getAllKanjis(), database.getAllVocabulary())),
     );
   }
 }

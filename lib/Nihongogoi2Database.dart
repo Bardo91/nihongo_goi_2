@@ -38,17 +38,17 @@ class Nihongogoi2Database{
     final dbPath  = await getDatabasesPath();
     final path = join(dbPath, DATABASE_NAME);
 
-    final exist = await databaseExists(path);
+    /*final exist = await databaseExists(path);
 
     if(!exist){
       try{
         await Directory(dirname(path)).create(recursive: true);
-      }catch(_){}
+      }catch(_){}*/
       ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
 
       List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes, flush: true);
-    }
+    //}
 
     database = await openDatabase(path);
   }
@@ -69,10 +69,11 @@ class Nihongogoi2Database{
     });
   }
 
-  List<VocabularyEntry> getAllVocabulary(){
+  Future<List<VocabularyEntry>> getAllVocabulary() async{
+    // Get a reference to the database.
+
     // Query the table for all The Dogs.
-    List<Map<String, dynamic>> maps;
-    database.query('dogs').then((value) => maps);
+    final  List<Map<String, dynamic>> maps = await database.query('vocabulary');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
