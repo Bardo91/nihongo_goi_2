@@ -12,7 +12,7 @@ class KanjiScreen extends StatefulWidget {
   @override
   _KanjiScreenState createState() => _KanjiScreenState(kanjisFuture);
 
-  Future<List<KanjiEntry>> kanjisFuture;
+  Future<List<VocabularyEntry>> kanjisFuture;
 }
 
 class _KanjiScreenState extends State<KanjiScreen> {
@@ -42,7 +42,7 @@ class _KanjiScreenState extends State<KanjiScreen> {
     );
   }
 
-  Widget _buildRow(KanjiEntry entry) {
+  Widget _buildRow(VocabularyEntry entry) {
     return ListTile(
       title: Row(
         children: [
@@ -54,6 +54,6 @@ class _KanjiScreenState extends State<KanjiScreen> {
     );
   }
 
-  Future<List<KanjiEntry>> kanjisFuture;
-  List<KanjiEntry> kanjis;
+  Future<List<VocabularyEntry>> kanjisFuture;
+  List<VocabularyEntry> kanjis;
 }

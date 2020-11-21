@@ -9,21 +9,13 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:path_provider/path_provider.dart';
 
-class KanjiEntry {
+class VocabularyEntry {
   final String kanji;
   final String hiragana;
   final String spanish;
 
-  KanjiEntry({this.kanji, this.hiragana, this.spanish});
+  VocabularyEntry({this.kanji, this.hiragana, this.spanish});
 }
-
-class VocabularyEntry {
-  final String hiragana;
-  final String spanish;
-
-  VocabularyEntry({this.hiragana, this.spanish});
-}
-
 
 class Nihongogoi2Database{
 
@@ -53,7 +45,7 @@ class Nihongogoi2Database{
     database = await openDatabase(path);
   }
 
-  Future<List<KanjiEntry>> getAllKanjis() async{
+  Future<List<VocabularyEntry>> getAllKanjis() async{
     // Get a reference to the database.
 
     // Query the table for all The Dogs.
@@ -61,7 +53,7 @@ class Nihongogoi2Database{
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
-      return KanjiEntry(
+      return VocabularyEntry(
         kanji: maps[i]['kanji'],
         hiragana: maps[i]['hiragana'],
         spanish: maps[i]['spanish'],
@@ -82,6 +74,39 @@ class Nihongogoi2Database{
         spanish: maps[i]['spanish'],
       );
     });
+  }
+
+
+  Future<List<VocabularyEntry>> getWeekDays() async{
+    // Get a reference to the database.
+
+    // Query the table for all The Dogs.
+    final  List<Map<String, dynamic>> maps = await database.query('weekdays');
+
+    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    return List.generate(maps.length, (i) {
+      return VocabularyEntry(
+        kanji: maps[i]['kanji'],
+        hiragana: maps[i]['hiragana'],
+        spanish: maps[i]['spanish'],
+      );
+    });
+
+  }
+
+    Future<List<VocabularyEntry>> getMonth() async{
+      // Get a reference to the database.
+
+      // Query the table for all The Dogs.
+      final  List<Map<String, dynamic>> maps = await database.query('month_days');
+
+      // Convert the List<Map<String, dynamic> into a List<Dog>.
+      return List.generate(maps.length, (i) {
+        return VocabularyEntry(
+          hiragana: maps[i]['hiragana'],
+          spanish: maps[i]['spanish'],
+        );
+      });
   }
 
 }
