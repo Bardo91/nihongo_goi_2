@@ -48,7 +48,9 @@ class _TestScreenState extends State<TestScreen> {
   String currentAnswer = "iam";
   String currentGuess = "";
   int statusAnswer = 0;
+  List<String> options;
   static var _random = new Random();
+  String selectedOption ;
 
   final TextEditingController tec = TextEditingController();
 
@@ -93,27 +95,56 @@ class _TestScreenState extends State<TestScreen> {
                 ],
               )
             ),
-            TextFormField(
+            /*TextFormField(
               decoration: InputDecoration(
                 hintText: "Guess the word",
               ),
               onChanged: (text) => currentGuess=text,
               controller: tec,
+            ),*/
+            Column(
+              children: [
+                RadioListTile(
+                  title: Text(options != null? options[0]: "-----"),
+                  value: options != null? options[0]: "-----",
+                  groupValue: selectedOption,
+                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                ),
+                RadioListTile(
+                  title: Text(options != null? options[1]: "-----"),
+                  value: options != null? options[1]: "-----",
+                  groupValue: selectedOption,
+                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                ),
+                RadioListTile(
+                  title: Text(options != null? options[2]: "-----"),
+                  value: options != null? options[2]: "-----",
+                  groupValue: selectedOption,
+                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                ),
+                RadioListTile(
+                  title: Text(options != null? options[3]: "-----"),
+                  value: options != null? options[3]: "-----",
+                  groupValue: selectedOption,
+                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                FlatButton(
-                  color: Color.fromARGB(255, 210, 210, 210),
-                  child: Text("Check answer"),
-                  onPressed: _checkAnswer,
-                ),
                 Spacer(),
                 FlatButton(
                   color: Color.fromARGB(255, 210, 210, 210),
-                  child: Text("Next"),
-                  onPressed: _newRandomWord,
-                )
+                  child: Text(statusAnswer == 0 ? "Check answer": "Next"),
+                  onPressed: (){
+                    if(statusAnswer == 0){
+                      _checkAnswer();
+                    }else{
+                      _newRandomWord();
+                    }
+                  },
+                ),
               ],
             ),
           ],
@@ -123,7 +154,7 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   void _checkAnswer(){
-    if(currentAnswer.toLowerCase() == currentGuess.toLowerCase()){
+    if( currentAnswer.toLowerCase() == currentGuess.toLowerCase()){
       statusAnswer = 1;
       _controllerCenter.play();
       print("well done!");
@@ -137,28 +168,53 @@ class _TestScreenState extends State<TestScreen> {
 
   void _newRandomWord(){
    _controllerCenter.stop();
-    statusAnswer = 0;
-    if(_random.nextInt(2)==0){ // kanji
-      if(kanjis != null && kanjis.length!=0){
-        int index = _random.nextInt(kanjis.length);
-        VocabularyEntry entry = kanjis[index];
-        currentWord = entry.kanji;
-        currentGuess = "";
-        currentAnswer = entry.spanish;
-      }
-    }else{ // vocabulary
-      if(vocabulary!= null && vocabulary.length!=0){
-        int index = _random.nextInt(vocabulary.length);
-        VocabularyEntry entry = vocabulary[index];
-        currentWord = entry.hiragana;
-        currentGuess = "";
-        currentAnswer = entry.spanish;
-      }
+   if(statusAnswer!=0){
+     statusAnswer = 0;
+     if(_random.nextInt(2)==0){ // kanji
+       if(kanjis != null && kanjis.length!=0){
+         int index = _random.nextInt(kanjis.length);
+         VocabularyEntry entry = kanjis[index];
+         currentWord = entry.kanji;
+         currentGuess = "";
+         currentAnswer = entry.spanish;
 
-    }
-    setState(() {
-      tec.clear();
-    });
+         options = [currentAnswer];
+         for(int i = 0; i < 3;i++){
+           int ri = _random.nextInt(kanjis.length);
+           if(ri != index){
+             VocabularyEntry re = kanjis[ri];
+             options.add(re.spanish);
+           }else{
+             i--;
+           }
+         }
+       }
+     }else{ // vocabulary
+       if(vocabulary!= null && vocabulary.length!=0){
+         int index = _random.nextInt(vocabulary.length);
+         VocabularyEntry entry = vocabulary[index];
+         currentWord = entry.hiragana;
+         currentGuess = "";
+         currentAnswer = entry.spanish;
+
+         options = [currentAnswer];
+         for(int i = 0; i < 3;i++){
+           int ri = _random.nextInt(vocabulary.length);
+           if(ri != index){
+             VocabularyEntry re = vocabulary[ri];
+             options.add(re.spanish);
+           }else{
+             i--;
+           }
+         }
+       }
+     }
+
+
+     tec.clear();
+
+     setState(() { });
+   }
   }
 
   Future<List<VocabularyEntry>> kanjisFuture;
