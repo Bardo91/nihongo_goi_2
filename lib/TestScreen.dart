@@ -45,9 +45,9 @@ class _TestScreenState extends State<TestScreen> {
   }
 
   String currentWord = "Click next";
-  String currentAnswer = "iam";
+  String currentAnswer = "";
   String currentGuess = "";
-  int statusAnswer = 0;
+  int statusAnswer = 1;
   List<String> options;
   static var _random = new Random();
   String selectedOption ;

@@ -1,4 +1,4 @@
-package com.example.nihongogoi2
+package bardo91.nihongo.nihongogoi2
 
 import io.flutter.embedding.android.FlutterActivity
 
