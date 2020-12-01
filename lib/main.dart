@@ -1,18 +1,33 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nihongogoi2/KanjiScreen.dart';
 import 'package:nihongogoi2/TestScreen.dart';
 import 'package:nihongogoi2/VocabularyScreen.dart';
 import 'package:nihongogoi2/Nihongogoi2Database.dart';
+import 'package:flame/flame.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: '日本語　２',
       theme: ThemeData(
@@ -21,7 +36,24 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
     );
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if(state == AppLifecycleState.resumed){
+      Flame.bgm.play('ost.mp3');
+    }else if(state == AppLifecycleState.inactive){
+      Flame.bgm.stop();
+    }
+  }
+
 }
+
 
 class HomePage extends StatelessWidget {
   Nihongogoi2Database database = Nihongogoi2Database();
@@ -33,53 +65,62 @@ class HomePage extends StatelessWidget {
     _context = context;
     return Scaffold(
       appBar: AppBar(
-        title: Text("日本語　ごい　２"),
+        title: Text(  "日本語　ごい　２",
+                      textAlign: TextAlign.center,),
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text( "テスト - Test"),
-            onTap: _openTestScreen,
+      body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
           ),
-          Divider(
-            thickness: 2,
-          ),
-          ListTile(
-            title: Text( "かんじ - Kanji"),
-            onTap: _openKanjiScreen,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-          ListTile(
-            title: Text( "Vocabulary"),
-            onTap: _openVocabularyScreen,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-          ListTile(
-          title: Text( "ようび - Weekdays"),
-            onTap: _openWeekdayscreen,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-          ListTile(
-            title: Text( "日　- Month days"),
-            onTap: _openMonthcreen,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-          ListTile(
-            title: Text( "Contadores - WIP"),
-            enabled: false,
-          ),
-          Divider(
-            thickness: 2,
-          ),
-        ],
+       child:  ListView(
+          children: [
+            ListTile(
+              title: Text( "テスト - Test"),
+              onTap: _openTestScreen,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            ListTile(
+              title: Text( "かんじ - Kanji"),
+              onTap: _openKanjiScreen,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            ListTile(
+              title: Text( "Vocabulary"),
+              onTap: _openVocabularyScreen,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            ListTile(
+            title: Text( "ようび - Weekdays"),
+              onTap: _openWeekdayscreen,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            ListTile(
+              title: Text( "日　- Month days"),
+              onTap: _openMonthcreen,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+            ListTile(
+              title: Text( "Contadores - WIP"),
+              enabled: false,
+            ),
+            Divider(
+              thickness: 2,
+            ),
+          ],
+        )
       )
     );
   }

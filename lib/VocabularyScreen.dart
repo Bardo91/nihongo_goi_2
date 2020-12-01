@@ -31,7 +31,14 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         appBar: AppBar(
           title: Text("Vocabulary Screen"),
         ),
-        body: ListView.builder(
+        body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                image: AssetImage("assets/background.jpg"),
+                fit: BoxFit.cover,
+                ),
+        ),
+        child: ListView.builder(
             padding: EdgeInsets.all(16.0),
             itemCount: vocabulary.length*2,
             itemBuilder: /*1*/ (context, i) {
@@ -39,6 +46,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
               final index = i ~/ 2;
               return _buildRow(vocabulary[index]);
             })
+        )
     );
   }
 

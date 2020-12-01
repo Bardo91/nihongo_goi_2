@@ -31,14 +31,22 @@ class _KanjiScreenState extends State<KanjiScreen> {
         appBar: AppBar(
           title: Text("Kanji Screen"),
         ),
-        body: ListView.builder(
-            padding: EdgeInsets.all(16.0),
-            itemCount: kanjis.length*2,
-            itemBuilder: /*1*/ (context, i) {
-              if (i.isOdd) return Divider(thickness: 2); /*2*/
-              final index = i ~/ 2;
-              return _buildRow(kanjis[index]);
-            })
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/background.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: ListView.builder(
+              padding: EdgeInsets.all(16.0),
+              itemCount: kanjis.length*2,
+              itemBuilder: /*1*/ (context, i) {
+                if (i.isOdd) return Divider(thickness: 2); /*2*/
+                final index = i ~/ 2;
+                return _buildRow(kanjis[index]);
+              })
+        )
     );
   }
 
