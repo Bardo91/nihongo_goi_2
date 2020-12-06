@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
           playMusic = !playMusic;
 
           if(playMusic){
-            Flame.bgm.play('ost.mp3');
+            Flame.bgm.play('ost.mp3', volume: 0.25);
           }else{
             Flame.bgm.stop();
           }
