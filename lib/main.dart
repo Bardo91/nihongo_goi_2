@@ -16,13 +16,12 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> {
 
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -37,28 +36,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.resumed){
-      Flame.bgm.play('ost.mp3');
-    }else if(state == AppLifecycleState.inactive){
-      Flame.bgm.stop();
-    }
-  }
-
 }
 
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-class HomePage extends StatelessWidget {
+class _HomePageState extends State<HomePage> {
   Nihongogoi2Database database = Nihongogoi2Database();
+  bool playMusic = false;
 
   BuildContext _context;
+
   @override
   Widget build(BuildContext context) {
     database.open();
@@ -66,7 +56,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(  "日本語　ごい　２",
-                      textAlign: TextAlign.center,),
+          textAlign: TextAlign.center,),
       ),
       body: Container(
           decoration: BoxDecoration(
@@ -75,53 +65,69 @@ class HomePage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-       child:  ListView(
-          children: [
-            ListTile(
-              title: Text( "テスト - Test"),
-              onTap: _openTestScreen,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            ListTile(
-              title: Text( "かんじ - Kanji"),
-              onTap: _openKanjiScreen,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            ListTile(
-              title: Text( "Vocabulary"),
-              onTap: _openVocabularyScreen,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            ListTile(
-            title: Text( "ようび - Weekdays"),
-              onTap: _openWeekdayscreen,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            ListTile(
-              title: Text( "日　- Month days"),
-              onTap: _openMonthcreen,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-            ListTile(
-              title: Text( "Contadores - WIP"),
-              enabled: false,
-            ),
-            Divider(
-              thickness: 2,
-            ),
-          ],
-        )
-      )
+          child:  ListView(
+            children: [
+              ListTile(
+                title: Text( "テスト - Test"),
+                onTap: _openTestScreen,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "かんじ - Kanji"),
+                onTap: _openKanjiScreen,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "Vocabulary"),
+                onTap: _openVocabularyScreen,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "ようび - Weekdays"),
+                onTap: _openWeekdayscreen,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "日　- Month days"),
+                onTap: _openMonthcreen,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "Contadores - WIP"),
+                enabled: false,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+            ],
+          )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          playMusic = !playMusic;
+
+          if(playMusic){
+            Flame.bgm.play('ost.mp3');
+          }else{
+            Flame.bgm.stop();
+          }
+
+          setState(() { });
+        },
+        child: Icon(playMusic? Icons.pause : Icons.play_arrow),
+        backgroundColor: Colors.pink,
+      ),
+
     );
   }
 
