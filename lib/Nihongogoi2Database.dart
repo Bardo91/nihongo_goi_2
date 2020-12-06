@@ -11,10 +11,10 @@ import 'package:path_provider/path_provider.dart';
 
 class VocabularyEntry {
   final String kanji;
-  final String hiragana;
+  final String japanese;
   final String spanish;
 
-  VocabularyEntry({this.kanji, this.hiragana, this.spanish});
+  VocabularyEntry({this.kanji, this.japanese, this.spanish});
 }
 
 class Nihongogoi2Database{
@@ -30,83 +30,51 @@ class Nihongogoi2Database{
     final dbPath  = await getDatabasesPath();
     final path = join(dbPath, DATABASE_NAME);
 
-    /*final exist = await databaseExists(path);
+    ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
 
-    if(!exist){
-      try{
-        await Directory(dirname(path)).create(recursive: true);
-      }catch(_){}*/
-      ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
-
-      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-      await File(path).writeAsBytes(bytes, flush: true);
-    //}
+    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    await File(path).writeAsBytes(bytes, flush: true);
 
     database = await openDatabase(path);
   }
 
-  Future<List<VocabularyEntry>> getAllKanjis() async{
+  Future<List<String>> getTables() async{
+    var tableNames = (await database
+        .query('sqlite_master', where: 'type = ?', whereArgs: ['table']))
+        .map((row) => row['name'] as String)
+        .toList(growable: true);
+
+    tableNames.remove('android_metadata');
+
+    return tableNames;
+  }
+
+  Future<List<VocabularyEntry>> getTable(String _tableName) async{
     // Get a reference to the database.
 
     // Query the table for all The Dogs.
-    final  List<Map<String, dynamic>> maps = await database.query('kanji');
+    final  List<Map<String, dynamic>> maps = await database.query(_tableName);
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return VocabularyEntry(
-        kanji: maps[i]['kanji'],
-        hiragana: maps[i]['hiragana'],
+        kanji: maps[i].containsKey('kanji')? maps[i]['kanji']:"",
+        japanese: maps[i]['japanese'],
         spanish: maps[i]['spanish'],
       );
     });
   }
 
-  Future<List<VocabularyEntry>> getAllVocabulary() async{
-    // Get a reference to the database.
+  Future<List<VocabularyEntry>> getAll() async{
+    var tables = await getTables();
 
-    // Query the table for all The Dogs.
-    final  List<Map<String, dynamic>> maps = await database.query('vocabulary');
+    List<VocabularyEntry> fullVocab = new List<VocabularyEntry>();
 
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
-    return List.generate(maps.length, (i) {
-      return VocabularyEntry(
-        hiragana: maps[i]['hiragana'],
-        spanish: maps[i]['spanish'],
-      );
-    });
+    for(var tableName in tables){
+      var table = await getTable(tableName);
+      fullVocab.addAll(table);
+    }
+
+    return fullVocab;
   }
-
-
-  Future<List<VocabularyEntry>> getWeekDays() async{
-    // Get a reference to the database.
-
-    // Query the table for all The Dogs.
-    final  List<Map<String, dynamic>> maps = await database.query('weekdays');
-
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
-    return List.generate(maps.length, (i) {
-      return VocabularyEntry(
-        kanji: maps[i]['kanji'],
-        hiragana: maps[i]['hiragana'],
-        spanish: maps[i]['spanish'],
-      );
-    });
-
-  }
-
-    Future<List<VocabularyEntry>> getMonth() async{
-      // Get a reference to the database.
-
-      // Query the table for all The Dogs.
-      final  List<Map<String, dynamic>> maps = await database.query('month_days');
-
-      // Convert the List<Map<String, dynamic> into a List<Dog>.
-      return List.generate(maps.length, (i) {
-        return VocabularyEntry(
-          hiragana: maps[i]['hiragana'],
-          spanish: maps[i]['spanish'],
-        );
-      });
-  }
-
 }

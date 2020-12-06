@@ -9,15 +9,13 @@ import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
-  TestScreen(_kanjis, _vocabulary){
-    kanjisFuture = _kanjis;
+  TestScreen(_vocabulary){
     vocabularyFuture = _vocabulary;
   }
 
   @override
-  _TestScreenState createState() => _TestScreenState(kanjisFuture, vocabularyFuture);
+  _TestScreenState createState() => _TestScreenState(vocabularyFuture);
 
-  Future<List<VocabularyEntry>> kanjisFuture;
   Future<List<VocabularyEntry>> vocabularyFuture;
 }
 
@@ -29,15 +27,8 @@ class _TestScreenState extends State<TestScreen> {
     super.dispose();
   }
 
-  _TestScreenState(_kanjis, _vocabulary){
-    kanjisFuture = _kanjis;
+  _TestScreenState(_vocabulary){
     vocabularyFuture = _vocabulary;
-
-    kanjisFuture.then((value) {
-      if (value != null) value.forEach((item) => kanjis.add(item));
-      setState(() {});
-    });
-
     vocabularyFuture.then((value) {
       if (value != null) value.forEach((item) => vocabulary.add(item));
       setState(() {});
@@ -216,7 +207,7 @@ class _TestScreenState extends State<TestScreen> {
        if(vocabulary!= null && vocabulary.length!=0){
          int index = _random.nextInt(vocabulary.length);
          VocabularyEntry entry = vocabulary[index];
-         currentWord = entry.hiragana;
+         currentWord = entry.japanese;
          currentGuess = "";
          currentAnswer = entry.spanish;
 

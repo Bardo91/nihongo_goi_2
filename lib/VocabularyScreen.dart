@@ -8,7 +8,6 @@ class VocabularyScreen extends StatefulWidget {
     vocabularyFuture = _vocabulary;
   }
 
-
   @override
   _VocabularyScreenState createState() => _VocabularyScreenState(vocabularyFuture);
 
@@ -54,7 +53,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     return ListTile(
         title: Row(
           children: [
-            Expanded(child:Text(entry.hiragana)),
+            Expanded(child:Text(entry.japanese)),
             Expanded(child:Text(entry.spanish)),
           ],
         )

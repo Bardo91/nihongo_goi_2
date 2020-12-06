@@ -134,14 +134,14 @@ class _HomePageState extends State<HomePage> {
   void _openTestScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => TestScreen(database.getAllKanjis(), database.getAllVocabulary())),
+      MaterialPageRoute(builder: (context) => TestScreen(database.getAll())),
     );
   }
 
   void _openKanjiScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => KanjiScreen(database.getAllKanjis())),
+      MaterialPageRoute(builder: (context) => KanjiScreen(database.getTable('kanji'))),
     );
 
   }
@@ -149,21 +149,21 @@ class _HomePageState extends State<HomePage> {
   void _openVocabularyScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => VocabularyScreen(database.getAllVocabulary())),
+      MaterialPageRoute(builder: (context) => VocabularyScreen(database.getAll())),
     );
   }
 
   void _openWeekdayscreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => KanjiScreen(database.getWeekDays())),
+      MaterialPageRoute(builder: (context) => KanjiScreen(database.getTable('weekdays'))),
     );
   }
 
   void _openMonthcreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => VocabularyScreen(database.getMonth())),
+      MaterialPageRoute(builder: (context) => VocabularyScreen(database.getTable('month_days'))),
     );
   }
 

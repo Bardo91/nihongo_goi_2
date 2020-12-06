@@ -55,7 +55,7 @@ class _KanjiScreenState extends State<KanjiScreen> {
       title: Row(
         children: [
           Expanded(child:Text(entry.kanji)),
-          Expanded(child:Text(entry.hiragana)),
+          Expanded(child:Text(entry.japanese)),
           Expanded(child:Text(entry.spanish)),
         ],
       )
