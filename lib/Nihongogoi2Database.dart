@@ -77,4 +77,14 @@ class Nihongogoi2Database{
 
     return fullVocab;
   }
+
+
+  Future<List<VocabularyEntry>> getAllTables(List<String> _tables) async{
+    List<VocabularyEntry> fullVocab = new List<VocabularyEntry>();
+    for(var tableName in _tables){
+      var table = await getTable(tableName);
+      fullVocab.addAll(table);
+    }
+    return fullVocab;
+  }
 }

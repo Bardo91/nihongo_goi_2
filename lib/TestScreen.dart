@@ -3,37 +3,27 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:nihongogoi2/ScoreBar.dart';
 
 import 'Nihongogoi2Database.dart';
 import 'package:confetti/confetti.dart';
-import 'package:flutter/material.dart';
 
 class TestScreen extends StatefulWidget {
-  TestScreen(_vocabulary){
+  int numQuestions_;
+
+  TestScreen(_vocabulary, int _numQuestions){
+    numQuestions_ = _numQuestions;
     vocabularyFuture = _vocabulary;
   }
 
   @override
-  _TestScreenState createState() => _TestScreenState(vocabularyFuture);
+  _TestScreenState createState() => _TestScreenState(vocabularyFuture, numQuestions_);
 
   Future<List<VocabularyEntry>> vocabularyFuture;
 }
 
 class _TestScreenState extends State<TestScreen> {
-  ConfettiController _controllerCenter = ConfettiController(duration: const Duration(seconds: 2));
-  @override
-  void dispose() {
-    _controllerCenter.dispose();
-    super.dispose();
-  }
-
-  _TestScreenState(_vocabulary){
-    vocabularyFuture = _vocabulary;
-    vocabularyFuture.then((value) {
-      if (value != null) value.forEach((item) => vocabulary.add(item));
-      setState(() {});
-    });
-  }
+  int currentScore = 0;
 
   String currentWord = "Click next";
   String currentAnswer = "";
@@ -43,7 +33,24 @@ class _TestScreenState extends State<TestScreen> {
   static var _random = new Random();
   String selectedOption ;
 
-  final TextEditingController tec = TextEditingController();
+  ScoreBar scoreBar;
+
+  ConfettiController _controllerCenter = ConfettiController(duration: const Duration(seconds: 2));
+  @override
+  void dispose() {
+    _controllerCenter.dispose();
+    super.dispose();
+  }
+
+  _TestScreenState(_vocabulary, _numQuestions){
+    scoreBar = new ScoreBar(scoreBarState, _numQuestions);
+    vocabularyFuture = _vocabulary;
+    vocabularyFuture.then((value) {
+      if (value != null) value.forEach((item) => vocabulary.add(item));
+      _newRandomWord();
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +87,9 @@ class _TestScreenState extends State<TestScreen> {
               ),
             ),
             Container(
+                child: scoreBar
+            ),
+            Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -92,13 +102,6 @@ class _TestScreenState extends State<TestScreen> {
                 ],
               )
             ),
-            /*TextFormField(
-              decoration: InputDecoration(
-                hintText: "Guess the word",
-              ),
-              onChanged: (text) => currentGuess=text,
-              controller: tec,
-            ),*/
             Column(
               children: [
                 RadioListTile(
@@ -154,11 +157,13 @@ class _TestScreenState extends State<TestScreen> {
     if( currentAnswer.toLowerCase() == currentGuess.toLowerCase()){
       statusAnswer = 1;
       _controllerCenter.play();
-      print("well done!");
+      scoreBarState.currentState.good();
+      // print("well done!");
     } else{
       statusAnswer = 2;
-      print("not yet answer is: "+currentAnswer + " you gave " + currentGuess);
+      // print("not yet answer is: "+currentAnswer + " you gave " + currentGuess);
       currentWord = currentAnswer;
+      scoreBarState.currentState.bad();
     }
     setState(() {});
   }
@@ -225,9 +230,6 @@ class _TestScreenState extends State<TestScreen> {
      }
 
      _shuffle(options);
-
-
-     tec.clear();
 
      setState(() { });
    }

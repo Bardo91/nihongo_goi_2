@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nihongogoi2/KanjiScreen.dart';
+import 'package:nihongogoi2/TestContentSelector.dart';
 import 'package:nihongogoi2/TestScreen.dart';
 import 'package:nihongogoi2/VocabularyScreen.dart';
 import 'package:nihongogoi2/Nihongogoi2Database.dart';
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
   void _openTestScreen(){
     Navigator.push(
       _context,
-      MaterialPageRoute(builder: (context) => TestScreen(database.getAll())),
+      MaterialPageRoute(builder: (context) => TestContentSelector(database.getTables(), _context, database)),
     );
   }
 
