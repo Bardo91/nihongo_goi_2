@@ -4,26 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:nihongogoi2/Nihongogoi2Database.dart';
 
 class VocabularyScreen extends StatefulWidget {
+  List<VocabularyEntry> vocabulary_;
+
   VocabularyScreen(_vocabulary){
-    vocabularyFuture = _vocabulary;
+    vocabulary_ = _vocabulary;
   }
 
   @override
-  _VocabularyScreenState createState() => _VocabularyScreenState(vocabularyFuture);
-
-  Future<List<VocabularyEntry>> vocabularyFuture;
+  _VocabularyScreenState createState() => _VocabularyScreenState();
 }
 
 class _VocabularyScreenState extends State<VocabularyScreen> {
-  _VocabularyScreenState(_vocabulary){
-    vocabulary = [];
-    vocabularyFuture = _vocabulary;
-    vocabularyFuture.then((value) {
-      if (value != null) value.forEach((item) => vocabulary.add(item));
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +30,11 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         ),
         child: ListView.builder(
             padding: EdgeInsets.all(16.0),
-            itemCount: vocabulary.length*2,
+            itemCount: widget.vocabulary_.length*2,
             itemBuilder: /*1*/ (context, i) {
               if (i.isOdd) return Divider(thickness: 2); /*2*/
               final index = i ~/ 2;
-              return _buildRow(vocabulary[index]);
+              return _buildRow(widget.vocabulary_[index]);
             })
         )
     );
@@ -53,13 +44,12 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     return ListTile(
         title: Row(
           children: [
-            Expanded(child:Text(entry.japanese)),
             Expanded(child:Text(entry.spanish)),
+            Expanded(child:Text(entry.japanese)),
+            entry.kanji != "" ? Expanded(child:Text(entry.kanji)):Container()
           ],
         )
     );
   }
 
-  Future<List<VocabularyEntry>> vocabularyFuture;
-  List<VocabularyEntry> vocabulary;
 }

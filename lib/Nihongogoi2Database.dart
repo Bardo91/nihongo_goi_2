@@ -23,8 +23,15 @@ class Nihongogoi2Database{
   final String DATABASE_NAME = "nihongo_goi_2.db";
 
   Database database;
+  bool isOpen_ = false;
+  List<String> tableNames_;
+  Map<String, List<VocabularyEntry>> vocabularyTables_ = new Map<String, List<VocabularyEntry>>();
 
-  void open() async{
+  bool isOpen(){
+    return isOpen_;
+  }
+
+  Future<bool> open() async{
     WidgetsFlutterBinding.ensureInitialized();
 
     final dbPath  = await getDatabasesPath();
@@ -36,53 +43,62 @@ class Nihongogoi2Database{
     await File(path).writeAsBytes(bytes, flush: true);
 
     database = await openDatabase(path);
-  }
 
-  Future<List<String>> getTables() async{
-    var tableNames = (await database
+    if(!database.isOpen){
+      return false;
+    }
+
+    tableNames_ = (await database
         .query('sqlite_master', where: 'type = ?', whereArgs: ['table']))
         .map((row) => row['name'] as String)
         .toList(growable: true);
 
-    tableNames.remove('android_metadata');
+    tableNames_.remove('android_metadata');
 
-    return tableNames;
-  }
+    for(var tableName in tableNames_){
+      // Query the table for all The Dogs.
+      final  List<Map<String, dynamic>> maps = await database.query(tableName);
 
-  Future<List<VocabularyEntry>> getTable(String _tableName) async{
-    // Get a reference to the database.
+      // Convert the List<Map<String, dynamic> into a List<Dog>.
+      var table = List.generate(maps.length, (i) {
+        return VocabularyEntry(
+          kanji: maps[i].containsKey('kanji')? maps[i]['kanji']:"",
+          japanese: maps[i]['japanese'],
+          spanish: maps[i]['spanish'],
+        );
+      });
 
-    // Query the table for all The Dogs.
-    final  List<Map<String, dynamic>> maps = await database.query(_tableName);
-
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
-    return List.generate(maps.length, (i) {
-      return VocabularyEntry(
-        kanji: maps[i].containsKey('kanji')? maps[i]['kanji']:"",
-        japanese: maps[i]['japanese'],
-        spanish: maps[i]['spanish'],
-      );
-    });
-  }
-
-  Future<List<VocabularyEntry>> getAll() async{
-    var tables = await getTables();
-
-    List<VocabularyEntry> fullVocab = new List<VocabularyEntry>();
-
-    for(var tableName in tables){
-      var table = await getTable(tableName);
-      fullVocab.addAll(table);
+      vocabularyTables_[tableName] = table;
     }
 
+    isOpen_ = true;
+
+    return true;
+  }
+
+  List<String> getTables(){
+    return tableNames_;
+  }
+
+  List<VocabularyEntry> getTable(String _tableName){
+    return vocabularyTables_[_tableName];
+  }
+
+  List<VocabularyEntry> getAll(){
+    var tables = getTables();
+    List<VocabularyEntry> fullVocab = new List<VocabularyEntry>();
+    for(var tableName in tables){
+      var table = getTable(tableName);
+      fullVocab.addAll(table);
+    }
     return fullVocab;
   }
 
 
-  Future<List<VocabularyEntry>> getAllTables(List<String> _tables) async{
+  List<VocabularyEntry> getAllTables(List<String> _tables){
     List<VocabularyEntry> fullVocab = new List<VocabularyEntry>();
     for(var tableName in _tables){
-      var table = await getTable(tableName);
+      var table = getTable(tableName);
       fullVocab.addAll(table);
     }
     return fullVocab;

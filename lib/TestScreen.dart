@@ -3,57 +3,56 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:nihongogoi2/ScoreBar.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'Nihongogoi2Database.dart';
 import 'package:confetti/confetti.dart';
 
 class TestScreen extends StatefulWidget {
   int numQuestions_;
+  List<VocabularyEntry> vocabulary_;
 
-  TestScreen(_vocabulary, int _numQuestions){
+  TestScreen(_vocabulary, _numQuestions){
     numQuestions_ = _numQuestions;
-    vocabularyFuture = _vocabulary;
+    vocabulary_ = _vocabulary;
   }
 
   @override
-  _TestScreenState createState() => _TestScreenState(vocabularyFuture, numQuestions_);
-
-  Future<List<VocabularyEntry>> vocabularyFuture;
+  _TestScreenState createState() => _TestScreenState();
 }
 
 class _TestScreenState extends State<TestScreen> {
-  int currentScore = 0;
+  List<bool> scores_;
+  int currentScore_ = 0;
 
   String currentWord = "Click next";
   String currentAnswer = "";
   String currentGuess = "";
-  int statusAnswer = 1;
+  int statusAnswer = -1;
+
   List<String> options;
   static var _random = new Random();
   String selectedOption ;
 
-  ScoreBar scoreBar;
-
   ConfettiController _controllerCenter = ConfettiController(duration: const Duration(seconds: 2));
+
+  @override
+  void initState() {
+    super.initState();
+    scores_ = List<bool>(widget.numQuestions_);
+    _newRandomWord();
+  }
+
   @override
   void dispose() {
-    _controllerCenter.dispose();
     super.dispose();
+    _controllerCenter.dispose();
   }
 
-  _TestScreenState(_vocabulary, _numQuestions){
-    scoreBar = new ScoreBar(scoreBarState, _numQuestions);
-    vocabularyFuture = _vocabulary;
-    vocabularyFuture.then((value) {
-      if (value != null) value.forEach((item) => vocabulary.add(item));
-      _newRandomWord();
-      setState(() {});
-    });
-  }
-
+  BuildContext parentContext_;
   @override
   Widget build(BuildContext context) {
+    parentContext_ = context;
     return Scaffold(
       appBar: AppBar(
         title: Text("Test Screen"),
@@ -86,8 +85,15 @@ class _TestScreenState extends State<TestScreen> {
                 ], // manually specify the colors to be used
               ),
             ),
-            Container(
-                child: scoreBar
+            Wrap(
+                children: List.generate(scores_.length, (i) =>
+                    Container(
+                      child: Icon(
+                          i >= currentScore_? Icons.help_outline: (scores_[i]? Icons.check: Icons.clear_outlined),
+                          color: i == currentScore_? Colors.yellow:(i > currentScore_? Colors.blue: (scores_[i]? Colors.green: Colors.red))
+                      ),
+                    )
+                )
             ),
             Container(
               child: Row(
@@ -136,7 +142,7 @@ class _TestScreenState extends State<TestScreen> {
                 Spacer(),
                 FlatButton(
                   color: Color.fromARGB(255, 210, 210, 210),
-                  child: Text(statusAnswer == 0 ? "Check answer": "Next"),
+                  child: Text(statusAnswer==-1? "Start": statusAnswer == 0 ? "Check answer": "Next"),
                   onPressed: (){
                     if(statusAnswer == 0){
                       _checkAnswer();
@@ -157,15 +163,21 @@ class _TestScreenState extends State<TestScreen> {
     if( currentAnswer.toLowerCase() == currentGuess.toLowerCase()){
       statusAnswer = 1;
       _controllerCenter.play();
-      scoreBarState.currentState.good();
+      good();
       // print("well done!");
     } else{
       statusAnswer = 2;
       // print("not yet answer is: "+currentAnswer + " you gave " + currentGuess);
       currentWord = currentAnswer;
-      scoreBarState.currentState.bad();
+      bad();
     }
     setState(() {});
+
+    if(currentScore_ == scores_.length){
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        endDialog();
+      });
+    }
   }
 
   List _shuffle(List items) {
@@ -189,45 +201,25 @@ class _TestScreenState extends State<TestScreen> {
    _controllerCenter.stop();
    if(statusAnswer!=0){
      statusAnswer = 0;
-     if(_random.nextInt(2)==0){ // kanji
-       if(kanjis != null && kanjis.length!=0){
-         int index = _random.nextInt(kanjis.length);
-         VocabularyEntry entry = kanjis[index];
-         currentWord = entry.kanji;
-         currentGuess = "";
-         currentAnswer = entry.spanish;
+     if(widget.vocabulary_!= null && widget.vocabulary_.length!=0){
+       int index = _random.nextInt(widget.vocabulary_.length);
+       VocabularyEntry entry = widget.vocabulary_[index];
+       currentWord = entry.japanese;
+       currentGuess = "";
+       currentAnswer = entry.spanish;
 
-         options = [currentAnswer];
-         for(int i = 0; i < 3;i++){
-           int ri = _random.nextInt(kanjis.length);
-           if(ri != index){
-             VocabularyEntry re = kanjis[ri];
-             options.add(re.spanish);
-           }else{
-             i--;
-           }
-         }
-       }
-     }else{ // vocabulary
-       if(vocabulary!= null && vocabulary.length!=0){
-         int index = _random.nextInt(vocabulary.length);
-         VocabularyEntry entry = vocabulary[index];
-         currentWord = entry.japanese;
-         currentGuess = "";
-         currentAnswer = entry.spanish;
-
-         options = [currentAnswer];
-         for(int i = 0; i < 3;i++){
-           int ri = _random.nextInt(vocabulary.length);
-           if(ri != index){
-             VocabularyEntry re = vocabulary[ri];
-             options.add(re.spanish);
-           }else{
-             i--;
-           }
+       options = [currentAnswer];
+       for(int i = 0; i < 3;i++){
+         int ri = _random.nextInt(widget.vocabulary_.length);
+         if(ri != index){
+           VocabularyEntry re = widget.vocabulary_[ri];
+           options.add(re.spanish);
+         }else{
+           i--;
          }
        }
      }
+     selectedOption = "";
 
      _shuffle(options);
 
@@ -235,11 +227,53 @@ class _TestScreenState extends State<TestScreen> {
    }
   }
 
-  Future<List<VocabularyEntry>> kanjisFuture;
-  List<VocabularyEntry> kanjis=[];
-  Future<List<VocabularyEntry>> vocabularyFuture;
-  List<VocabularyEntry> vocabulary=[];
 
+  void good(){
+    if(currentScore_ < scores_.length) {
+      scores_[currentScore_] = true;
+      currentScore_++;
+      setState(() {});
+    }
+  }
+
+  void bad(){
+    if(currentScore_ < scores_.length){
+      scores_[currentScore_] = false;
+      currentScore_++;
+      setState(() {});
+    }
+  }
+
+
+  void endDialog() {
+    double totalScore = 0;
+    for(var val in scores_){
+      if(val)
+        totalScore+=1;
+    }
+    totalScore/=scores_.length;
+
+    showDialog<void>(
+        context: parentContext_,
+        useRootNavigator: true,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title:  Text(totalScore <0.5? "Oh....":(totalScore<1.0?"Great!":"Perfect!")),
+            content: Row(),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Finish"),
+                onPressed: () {
+                  Navigator.of(parentContext_, rootNavigator: true).pop();
+                  Navigator.of(parentContext_, rootNavigator: true).pop();
+                },
+              )
+            ],
+
+          );
+        });
+  }
 }
 
 

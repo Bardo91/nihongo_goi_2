@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
 
-final scoreBarState = new GlobalKey<_ScoreBarState>();
-
 class ScoreBar extends StatefulWidget {
   int numQuestions_;
   ScoreBar(key, _numQuestions):  super(key: key) {
