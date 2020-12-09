@@ -38,9 +38,9 @@ class _TestScreenState extends State<TestScreen> {
 
   @override
   void initState() {
-    super.initState();
     scores_ = List<bool>(widget.numQuestions_);
     _newRandomWord();
+    super.initState();
   }
 
   @override
@@ -90,7 +90,7 @@ class _TestScreenState extends State<TestScreen> {
                     Container(
                       child: Icon(
                           i >= currentScore_? Icons.help_outline: (scores_[i]? Icons.check: Icons.clear_outlined),
-                          color: i == currentScore_? Colors.yellow:(i > currentScore_? Colors.blue: (scores_[i]? Colors.green: Colors.red))
+                          color: ((i == currentScore_) && (statusAnswer == 0)) ? Colors.yellow:(i >= currentScore_? Colors.blue: (scores_[i]? Colors.green: Colors.red))
                       ),
                     )
                 )
@@ -209,13 +209,12 @@ class _TestScreenState extends State<TestScreen> {
        currentAnswer = entry.spanish;
 
        options = [currentAnswer];
-       for(int i = 0; i < 3;i++){
+       for(int i = 0; i < 3;){
          int ri = _random.nextInt(widget.vocabulary_.length);
-         if(ri != index){
+         if(!options.contains(widget.vocabulary_[ri].spanish)){
            VocabularyEntry re = widget.vocabulary_[ri];
            options.add(re.spanish);
-         }else{
-           i--;
+           i++;
          }
        }
      }
