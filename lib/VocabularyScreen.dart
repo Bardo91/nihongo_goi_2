@@ -15,6 +15,20 @@ class VocabularyScreen extends StatefulWidget {
 }
 
 class _VocabularyScreenState extends State<VocabularyScreen> {
+  TextEditingController _searchController;
+
+  @override
+  void initState() {
+    _searchController = new TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,14 +42,35 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                 fit: BoxFit.cover,
                 ),
         ),
-        child: ListView.builder(
-            padding: EdgeInsets.all(16.0),
-            itemCount: widget.vocabulary_.length*2,
-            itemBuilder: /*1*/ (context, i) {
-              if (i.isOdd) return Divider(thickness: 2); /*2*/
-              final index = i ~/ 2;
-              return _buildRow(widget.vocabulary_[index]);
-            })
+        child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Search',
+                ),
+                controller: _searchController,
+                onChanged: (text) => setState((){}),
+              ),
+              Flexible(
+                child: ListView.builder(
+                    padding: EdgeInsets.all(16.0),
+                    itemCount: widget.vocabulary_.length*2,
+                    itemBuilder: /*1*/ (context, i) {
+                      final index = i ~/ 2;
+                      if( widget.vocabulary_[index].spanish.toLowerCase().contains(_searchController.text.toLowerCase()) ||
+                          widget.vocabulary_[index].japanese.toLowerCase().contains(_searchController.text.toLowerCase())){
+                        if (i.isOdd)
+                          return Divider(thickness: 2); /*2*/
+                        else
+                          return _buildRow(widget.vocabulary_[index]);
+                      }else{
+                        return Container();
+                      }
+                    }),
+              )
+            ],
+          )
         )
     );
   }
