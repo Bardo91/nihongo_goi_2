@@ -36,6 +36,14 @@ class _TestScreenState extends State<TestScreen> {
 
   ConfettiController _controllerCenter = ConfettiController(duration: const Duration(seconds: 2));
 
+  getRadioCallback(){
+    if(statusAnswer != 0){
+      return null;
+    }else{
+      return (value) { setState(() {currentGuess = value; selectedOption = value; }); };
+    }
+  }
+
   @override
   void initState() {
     scores_ = List<bool>(widget.numQuestions_);
@@ -114,25 +122,25 @@ class _TestScreenState extends State<TestScreen> {
                   title: Text(options != null? options[0]: "-----"),
                   value: options != null? options[0]: "-----",
                   groupValue: selectedOption,
-                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                  onChanged: getRadioCallback(),
                 ),
                 RadioListTile(
                   title: Text(options != null? options[1]: "-----"),
                   value: options != null? options[1]: "-----",
                   groupValue: selectedOption,
-                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                  onChanged: getRadioCallback(),
                 ),
                 RadioListTile(
                   title: Text(options != null? options[2]: "-----"),
                   value: options != null? options[2]: "-----",
                   groupValue: selectedOption,
-                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                  onChanged: getRadioCallback(),
                 ),
                 RadioListTile(
                   title: Text(options != null? options[3]: "-----"),
                   value: options != null? options[3]: "-----",
                   groupValue: selectedOption,
-                  onChanged: (value) { setState(() {currentGuess = value; selectedOption = value; }); },
+                  onChanged: getRadioCallback(),
                 ),
               ],
             ),
@@ -168,9 +176,9 @@ class _TestScreenState extends State<TestScreen> {
     } else{
       statusAnswer = 2;
       // print("not yet answer is: "+currentAnswer + " you gave " + currentGuess);
-      currentWord = currentAnswer;
       bad();
     }
+    currentWord = currentAnswer;
     setState(() {});
 
     if(currentScore_ == scores_.length){
