@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gifimage/flutter_gifimage.dart';
+import 'package:nihongogoi2/KanjiPainterScreen.dart';
 import 'package:nihongogoi2/TestContentSelector.dart';
 import 'package:nihongogoi2/Nihongogoi2Database.dart';
 import 'package:flame/flame.dart';
@@ -86,14 +87,21 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
             children: [
               ListTile(
                 title: Text( "テスト - Test"),
-                onTap: () => _openTestScreen(context),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestContentSelector(database)))
               ),
               Divider(
                 thickness: 2,
               ),
               ListTile(
                 title: Text( "Vocabulario"),
-                onTap: () => _openVocabularySelector(context),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => VocabularyTopicSelector(database)))
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                title: Text( "Kanji Painter"),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => KanjiPainterScreen(database.getTable("kanji"))))
               ),
               Divider(
                 thickness: 2,
@@ -122,21 +130,6 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
       ),
 
     );
-  }
-
-  void  _openTestScreen(_context){
-    Navigator.push(
-        _context,
-        MaterialPageRoute(builder: (context) => TestContentSelector(database),
-        ));
-  }
-
-
-  void  _openVocabularySelector(_context){
-    Navigator.push(
-        _context,
-        MaterialPageRoute(builder: (context) => VocabularyTopicSelector(database),
-        ));
   }
 
 }
