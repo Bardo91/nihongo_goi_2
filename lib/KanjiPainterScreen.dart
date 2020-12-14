@@ -25,6 +25,7 @@ class _KanjiPainterScreenState extends State<KanjiPainterScreen> {
     super.initState();
     _controller = _newController();
     kanjiCanvas = new Painter(_controller);
+    widget.vocabulary_.shuffle();
   }
 
   PainterController _newController() {
@@ -37,7 +38,6 @@ class _KanjiPainterScreenState extends State<KanjiPainterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    widget.vocabulary_.shuffle();
     return Scaffold(
         appBar: AppBar(
           title: Text("Vocabulary Screen"),
@@ -70,6 +70,7 @@ class _KanjiPainterScreenState extends State<KanjiPainterScreen> {
                           textScaleFactor: 20,
                           style: TextStyle(
                             color: Colors.grey,
+                            fontFamily: 'KanjiStrokeOrders_v4'
                           ),
                         ),
                     ),
@@ -78,13 +79,34 @@ class _KanjiPainterScreenState extends State<KanjiPainterScreen> {
                 ],
               ),
         ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _controller.clear();
-          setState(() { });
-        },
-        child: Text("Next"),
-        backgroundColor: Colors.pink,
+      floatingActionButton: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 80.0,
+            right: 10.0,
+            child: FloatingActionButton(
+              heroTag: 'save',
+              onPressed: () {
+                _controller.clear();
+                setState(() {});
+              },
+              child: Text("Clean"),
+            ),
+          ),
+          Positioned(
+            bottom: 10.0,
+            right: 10.0,
+            child: FloatingActionButton(
+              heroTag: 'close',
+              onPressed: () {
+                widget.vocabulary_.shuffle();
+                _controller.clear();
+                setState(() {});
+              },
+              child: Text("Next"),
+            ),
+          ),
+        ],
       ),
     );
   }
