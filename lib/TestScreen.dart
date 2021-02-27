@@ -209,19 +209,49 @@ class _TestScreenState extends State<TestScreen> {
    _controllerCenter.stop();
    if(statusAnswer!=0){
      statusAnswer = 0;
+     int sourceType = _random.nextInt(3); // 0: spanish
+                                          // 1: japanese
+                                          // 2: kanji
+     int destType = _random.nextInt(3);
+     while(destType == sourceType){
+       destType = _random.nextInt(3);
+     }
+
      if(widget.vocabulary_!= null && widget.vocabulary_.length!=0){
        int index = _random.nextInt(widget.vocabulary_.length);
        VocabularyEntry entry = widget.vocabulary_[index];
-       currentWord = entry.japanese;
+
        currentGuess = "";
-       currentAnswer = entry.spanish;
+       if(sourceType == 0){
+         currentWord = entry.spanish;
+       }else if(sourceType == 1){
+         currentWord = entry.japanese;
+       }else{
+         currentWord = entry.kanji == ""? entry.japanese:entry.kanji;
+       }
+       if(destType == 0){
+         currentAnswer = entry.spanish;
+       }else if(destType == 1){
+         currentAnswer = entry.japanese;
+       }else{
+         currentAnswer = entry.kanji == ""? entry.japanese:entry.kanji;
+       }
 
        options = [currentAnswer];
        for(int i = 0; i < 3;){
          int ri = _random.nextInt(widget.vocabulary_.length);
-         if(!options.contains(widget.vocabulary_[ri].spanish)){
-           VocabularyEntry re = widget.vocabulary_[ri];
-           options.add(re.spanish);
+         VocabularyEntry re = widget.vocabulary_[ri];
+         String intermediate;
+         if(destType == 0){
+           intermediate = re.spanish;
+         }else if(destType == 1){
+           intermediate = re.japanese;
+         }else{
+           intermediate = re.kanji == ""? re.japanese:re.kanji;
+         }
+
+         if(!options.contains(intermediate)){
+           options.add(intermediate);
            i++;
          }
        }
@@ -233,7 +263,6 @@ class _TestScreenState extends State<TestScreen> {
      setState(() { });
    }
   }
-
 
   void good(){
     if(currentScore_ < scores_.length) {
