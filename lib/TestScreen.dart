@@ -209,17 +209,20 @@ class _TestScreenState extends State<TestScreen> {
    _controllerCenter.stop();
    if(statusAnswer!=0){
      statusAnswer = 0;
-     int sourceType = _random.nextInt(3); // 0: spanish
-                                          // 1: japanese
-                                          // 2: kanji
-     int destType = _random.nextInt(3);
-     while(destType == sourceType){
-       destType = _random.nextInt(3);
-     }
 
      if(widget.vocabulary_!= null && widget.vocabulary_.length!=0){
        int index = _random.nextInt(widget.vocabulary_.length);
        VocabularyEntry entry = widget.vocabulary_[index];
+
+       int nOptions = entry.kanji == ""? 2:3;
+
+       int sourceType = _random.nextInt(nOptions); // 0: spanish
+                                           // 1: japanese
+                                           // 2: kanji
+       int destType = _random.nextInt(nOptions);
+       while(destType == sourceType){
+         destType = _random.nextInt(nOptions);
+       }
 
        currentGuess = "";
        if(sourceType == 0){
@@ -227,14 +230,14 @@ class _TestScreenState extends State<TestScreen> {
        }else if(sourceType == 1){
          currentWord = entry.japanese;
        }else{
-         currentWord = entry.kanji == ""? entry.japanese:entry.kanji;
+         currentWord = entry.kanji;
        }
        if(destType == 0){
          currentAnswer = entry.spanish;
        }else if(destType == 1){
          currentAnswer = entry.japanese;
        }else{
-         currentAnswer = entry.kanji == ""? entry.japanese:entry.kanji;
+         currentAnswer = entry.kanji;
        }
 
        options = [currentAnswer];
@@ -247,7 +250,7 @@ class _TestScreenState extends State<TestScreen> {
          }else if(destType == 1){
            intermediate = re.japanese;
          }else{
-           intermediate = re.kanji == ""? re.japanese:re.kanji;
+           intermediate = re.kanji;
          }
 
          if(!options.contains(intermediate)){

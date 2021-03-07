@@ -41,7 +41,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                 image: AssetImage("assets/background.jpg"),
                 fit: BoxFit.cover,
                 ),
-        ),
+            ),
         child: Column(
             children: [
               TextField(

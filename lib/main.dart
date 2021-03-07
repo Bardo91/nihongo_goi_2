@@ -5,11 +5,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_gifimage/flutter_gifimage.dart';
 import 'package:nihongogoi2/KanjiPainterScreen.dart';
+import 'package:nihongogoi2/LessonSelector.dart';
 import 'package:nihongogoi2/TestContentSelector.dart';
 import 'package:nihongogoi2/Nihongogoi2Database.dart';
 import 'package:flame/flame.dart';
 import 'package:nihongogoi2/VocabularyTopicSelector.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+
+import 'Nihongogoi2DatabaseLessons.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,9 +39,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
-  Nihongogoi2Database database = Nihongogoi2Database();
+  Nihongogoi2Database _dbVocabulary = Nihongogoi2Database();
+  Nihongogoi2DatabaseLessons _dbLessons = Nihongogoi2DatabaseLessons();
   ProgressDialog dbProgressDialog;
   Future<bool> isDbOpen;
+  Future<bool> isDbLessonsOpen;
   bool playMusic = false;
 
   GifController controller;
@@ -47,7 +52,8 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
   void initState() {
     super.initState();
 
-    isDbOpen = database.open();
+    isDbOpen = _dbVocabulary.open();
+    isDbLessonsOpen = _dbLessons.open();
     dbProgressDialog = ProgressDialog(
       context,
       type: ProgressDialogType.Normal,
@@ -68,7 +74,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
-      if(!database.isOpen())
+      if(!_dbVocabulary.isOpen() & !_dbLessons.isOpen)
         dbProgressDialog.show();
     });
 
@@ -90,21 +96,28 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
             children: [
               ListTile(
                 title: Text( "テスト - Test"),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestContentSelector(database)))
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestContentSelector(_dbVocabulary)))
               ),
               Divider(
                 thickness: 2,
               ),
               ListTile(
                 title: Text( "Vocabulario"),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => VocabularyTopicSelector(database)))
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => VocabularyTopicSelector(_dbVocabulary)))
               ),
               Divider(
                 thickness: 2,
               ),
               ListTile(
-                title: Text( "Kanji Painter"),
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => KanjiPainterScreen(database.getTable("kanji"))))
+                  title: Text( "Kanji Painter"),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => KanjiPainterScreen(_dbVocabulary.getTable("kanji"))))
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              ListTile(
+                  title: Text( "Lessons"),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LessonSelector(_dbLessons.getEntries)))
               ),
               Divider(
                 thickness: 2,
