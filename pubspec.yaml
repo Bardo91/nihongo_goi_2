@@ -23,25 +23,26 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg:
   sqflite:
   path:
-  path_provider: ^1.6.5
-  downloads_path_provider_28: ^0.1.0
-  permission_handler: ^4.4.0+hotfix.2
-  open_file: ^3.0.1
-  flutter_local_notifications: ^1.3.0
-  confetti: ^0.5.4+1
-  flame: ^0.26.0
-  chips_choice: ^2.0.1
-  progress_dialog: ^1.2.4
-  flutter_gifimage: ^1.0.1
-  painter: ^0.4.0
-  dwds: ^6.0.0
-  flutter_html: ^1.3.0
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
+  image:
+  path_provider:
+  downloads_path_provider_28:
+  permission_handler:
+  open_file:
+  flutter_local_notifications:
+  confetti:
+  flame:
+  chips_choice:
+  progress_dialog:
+  flutter_gifimage:
+  painter:
+  devtools_server:
+  dwds:
+  flutter_html:
+  cupertino_icons:
+  flutter_launcher_icons:
 
 dev_dependencies:
   flutter_launcher_icons:

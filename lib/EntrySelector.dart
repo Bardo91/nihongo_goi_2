@@ -43,11 +43,21 @@ class _EntrySelectorState extends State<EntrySelector> {
                             MaterialPageRoute(builder: (context) =>
                               Scaffold(
                               appBar: AppBar(
-                              title: Text("Selecciona el tema"),
+                              title: Text(widget._entries[index].title),
                               ),
-                              body: SingleChildScrollView(
-                                              child: Html(data: widget._entries[index].html),
-                                            )
+                              body:  Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage("assets/background.jpg"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child:SingleChildScrollView(
+                                    child: Html(
+                                        data: widget._entries[index].html
+                                    ),
+                                  )
+                              )
                               )
                             )),
                   );
