@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:nihongogoi2/Nihongogoi2DatabaseLessons.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class EntrySelector extends StatefulWidget {
   List<LessonEntry> _entries = List<LessonEntry>();
@@ -15,6 +18,13 @@ class EntrySelector extends StatefulWidget {
 }
 
 class _EntrySelectorState extends State<EntrySelector> {
+  WebViewController _controller;
+  var HtmlCode = '<h1> h1 Heading Tag</h1>' +
+      '<h2> h2 Heading Tag </h2>' +
+      '<p> Sample Paragraph Tag </p>' +
+      '<img src="https://flutter-examples.com/wp-content/uploads/2019/04/install_thumb.png" alt="Image" width="250" height="150" border="3">' ;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +62,13 @@ class _EntrySelectorState extends State<EntrySelector> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  child:SingleChildScrollView(
-                                    child: Html(
-                                        data: widget._entries[index].html
-                                    ),
+                                  child: WebViewPlus(
+                                    javascriptMode: JavascriptMode.unrestricted,
+                                    onWebViewCreated: (controller) {
+                                      controller.loadString(widget._entries[index].html);
+                                    },
                                   )
+
                               )
                               )
                             )),
