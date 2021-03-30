@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons:
   flutter_launcher_icons:
   webview_flutter_plus:
+  flutter_inappwebview:
 
 dev_dependencies:
   flutter_launcher_icons:

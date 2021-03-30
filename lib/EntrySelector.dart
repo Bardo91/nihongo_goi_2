@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:nihongogoi2/Nihongogoi2DatabaseLessons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
@@ -62,12 +63,18 @@ class _EntrySelectorState extends State<EntrySelector> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  child: WebViewPlus(
+                                  child:
+                                  InAppWebView(
+                                    initialData: InAppWebViewInitialData(
+                                      data: widget._entries[index].html
+                                    ),
+                                  )
+                                  /*WebViewPlus(
                                     javascriptMode: JavascriptMode.unrestricted,
                                     onWebViewCreated: (controller) {
                                       controller.loadString(widget._entries[index].html);
                                     },
-                                  )
+                                  )*/
 
                               )
                               )
