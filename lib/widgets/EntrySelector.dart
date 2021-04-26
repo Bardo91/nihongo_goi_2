@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:nihongogoi2/Nihongogoi2DatabaseLessons.dart';
+import 'package:nihongogoi2/persistency/Nihongogoi2DatabaseLessons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
@@ -67,6 +67,12 @@ class _EntrySelectorState extends State<EntrySelector> {
                                   InAppWebView(
                                     initialData: InAppWebViewInitialData(
                                       data: widget._entries[index].html
+                                    ),
+                                    initialOptions: InAppWebViewGroupOptions(
+                                      crossPlatform: InAppWebViewOptions(
+                                          debuggingEnabled: false,
+                                          preferredContentMode: UserPreferredContentMode.MOBILE,
+                                          supportZoom: true ),
                                     ),
                                   )
                                   /*WebViewPlus(

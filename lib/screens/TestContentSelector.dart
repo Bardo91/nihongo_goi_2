@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:chips_choice/chips_choice.dart';
-import 'package:nihongogoi2/Nihongogoi2Database.dart';
+import '../persistency/Nihongogoi2Database.dart';
 import 'package:path/path.dart';
 
 import 'TestScreen.dart';

@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:nihongogoi2/Nihongogoi2Database.dart';
+import '../persistency/Nihongogoi2Database.dart';
 
 class VocabularyScreen extends StatefulWidget {
   List<VocabularyEntry> vocabulary_;

@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:nihongogoi2/Nihongogoi2Database.dart';
-import 'package:nihongogoi2/VocabularyScreen.dart';
+import '../persistency/Nihongogoi2Database.dart';
+import '../screens/VocabularyScreen.dart';
 
 class VocabularyTopicSelector extends StatefulWidget {
   List<String> topics_;

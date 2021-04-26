@@ -4,15 +4,15 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gifimage/flutter_gifimage.dart';
-import 'package:nihongogoi2/KanjiPainterScreen.dart';
-import 'package:nihongogoi2/LessonSelector.dart';
-import 'package:nihongogoi2/TestContentSelector.dart';
-import 'package:nihongogoi2/Nihongogoi2Database.dart';
+import 'package:nihongogoi2/screens/KanjiPainterScreen.dart';
+import 'package:nihongogoi2/screens/LessonSelector.dart';
+import 'package:nihongogoi2/screens/TestContentSelector.dart';
+import 'package:nihongogoi2/persistency/Nihongogoi2Database.dart';
 import 'package:flame/flame.dart';
-import 'package:nihongogoi2/VocabularyTopicSelector.dart';
+import 'package:nihongogoi2/screens/VocabularyTopicSelector.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import 'Nihongogoi2DatabaseLessons.dart';
+import 'persistency/Nihongogoi2DatabaseLessons.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
