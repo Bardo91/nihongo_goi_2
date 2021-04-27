@@ -36,12 +36,9 @@ class _ExerciseYouWriteState extends State<ExerciseYouWrite> {
     var answer = widget._vocabulary[widget._idAnswer];
 
     // Select mode of exercise
-    int sourceType = random.nextInt(answer.kanji == ""? 2:3);
+    int sourceType = 0;
 
-    int destType = random.nextInt(answer.kanji == ""? 2:3);
-    while(destType == sourceType){
-      destType = random.nextInt(answer.kanji == ""? 2:3);
-    }
+    int destType = random.nextInt(answer.kanji == ""? 1:2)+1;
 
     _guess = getStringFromWord(answer, sourceType);
     _answer = getStringFromWord(answer, destType);

@@ -54,8 +54,21 @@ class _TestScreenState extends State<TestScreen> {
 
     Widget exercise;
     if(_hasAnswered) {
-      exercise = Container(
-        child: Text(_scores[_currentQuestionId-1]?"Great!":"Oh....."),
+      exercise = Column(
+        children: [
+          Text(_scores[_currentQuestionId-1]?"Bien!":"Oh...",textScaleFactor: 2,),
+          Text("La palabra es: "),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(widget.vocabulary_[_currentWordId].spanish,),
+              Icon(Icons.arrow_forward),
+              Text(widget.vocabulary_[_currentWordId].japanese),
+              widget.vocabulary_[_currentWordId].kanji != ""? Icon(Icons.arrow_forward): Container(),
+              widget.vocabulary_[_currentWordId].kanji != ""? Text(widget.vocabulary_[_currentWordId].kanji): Container()
+            ],
+          )
+        ]
       );
     }
     else {
