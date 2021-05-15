@@ -1,12 +1,12 @@
 
 
 import 'package:flutter/material.dart';
-import '../persistency/Nihongogoi2Database.dart';
-import '../screens/VocabularyScreen.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/screens/VocabularyScreen.dart';
 
 class VocabularyTopicSelector extends StatefulWidget {
   List<String> topics_;
-  Nihongogoi2Database database_;
+  nihongogoin5Database database_;
   VocabularyTopicSelector(_database){
     database_ = _database;
     topics_ = database_.getTables();

@@ -16,7 +16,7 @@ class LessonEntry {
   LessonEntry({this.title, this.html});
 }
 
-class Nihongogoi2DatabaseLessons{
+class nihongogoin5DatabaseLessons{
 
   final int DATABASE_VERSION = 1;
   final String DATABASE_NAME = "nihongo_goi_lessons.db";

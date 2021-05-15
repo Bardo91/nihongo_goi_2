@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="bardo91.nihongo.nihongogoi2">
+    package="bardo91.nihongo.nihongogoin5">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="nihongogoi2"
+        android:label="nihongogoin5"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

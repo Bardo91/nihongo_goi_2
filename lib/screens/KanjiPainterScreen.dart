@@ -3,7 +3,7 @@ import 'package:painter/painter.dart';
 
 
 import 'package:flutter/material.dart';
-import '../persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
 
 class KanjiPainterScreen extends StatefulWidget {
   List<VocabularyEntry> vocabulary_;

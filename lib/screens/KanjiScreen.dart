@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import '../persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
 
 class KanjiScreen extends StatefulWidget {
   KanjiScreen(_kanji){

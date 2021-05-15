@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:chips_choice/chips_choice.dart';
-import '../persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
 import 'package:path/path.dart';
 
 import 'TestScreen.dart';
 
 
 class TestContentSelector extends StatefulWidget {
-  Nihongogoi2Database db_;
+  nihongogoin5Database db_;
 
   TestContentSelector(_db){
     db_ = _db;

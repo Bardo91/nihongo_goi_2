@@ -17,10 +17,10 @@ class VocabularyEntry {
   VocabularyEntry({this.kanji, this.japanese, this.spanish});
 }
 
-class Nihongogoi2Database{
+class nihongogoin5Database{
 
   final int DATABASE_VERSION = 1;
-  final String DATABASE_NAME = "nihongo_goi_2.db";
+  final String DATABASE_NAME = "nihongo_goi_n5.db";
 
   Database database;
   bool isOpen_ = false;

@@ -1,4 +1,4 @@
-# nihongogoi2
+# nihongogoin5
 
 Vocabulary helper app for CEAO Nihongo level 2
 

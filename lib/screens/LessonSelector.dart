@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../widgets/EntrySelector.dart';
-import '../persistency/Nihongogoi2DatabaseLessons.dart';
+import 'package:nihongogoin5/widgets/EntrySelector.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2DatabaseLessons.dart';
 
 class LessonSelector extends StatefulWidget {
   Map<String, List<LessonEntry>> _lessonsEntries = new Map<String, List<LessonEntry>>();

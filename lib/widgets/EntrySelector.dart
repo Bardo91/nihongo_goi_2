@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:nihongogoi2/persistency/Nihongogoi2DatabaseLessons.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2DatabaseLessons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 class EntrySelector extends StatefulWidget {
   List<LessonEntry> _entries = List<LessonEntry>();

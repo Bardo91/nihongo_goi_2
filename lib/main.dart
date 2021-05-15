@@ -1,18 +1,17 @@
 
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gifimage/flutter_gifimage.dart';
-import 'package:nihongogoi2/screens/KanjiPainterScreen.dart';
-import 'package:nihongogoi2/screens/LessonSelector.dart';
-import 'package:nihongogoi2/screens/TestContentSelector.dart';
-import 'package:nihongogoi2/persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/screens/KanjiPainterScreen.dart';
+import 'package:nihongogoin5/screens/LessonSelector.dart';
+import 'package:nihongogoin5/screens/TestContentSelector.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2DatabaseLessons.dart';
 import 'package:flame/flame.dart';
-import 'package:nihongogoi2/screens/VocabularyTopicSelector.dart';
+import 'package:nihongogoin5/screens/VocabularyTopicSelector.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
-import 'persistency/Nihongogoi2DatabaseLessons.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,8 +38,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
-  Nihongogoi2Database _dbVocabulary = Nihongogoi2Database();
-  Nihongogoi2DatabaseLessons _dbLessons = Nihongogoi2DatabaseLessons();
+  nihongogoin5Database _dbVocabulary = nihongogoin5Database();
+  nihongogoin5DatabaseLessons _dbLessons = nihongogoin5DatabaseLessons();
   ProgressDialog dbProgressDialog;
   Future<bool> isDbOpen;
   Future<bool> isDbLessonsOpen;

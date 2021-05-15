@@ -4,11 +4,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:nihongogoi2/widgets/exercises/Exercise4Options.dart';
-import 'package:nihongogoi2/widgets/exercises/ExerciseYouWrite.dart';
+import 'package:nihongogoin5/widgets/exercises/Exercise4Options.dart';
+import 'package:nihongogoin5/widgets/exercises/ExerciseYouWrite.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
-import '../persistency/Nihongogoi2Database.dart';
+import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
 import 'package:confetti/confetti.dart';
 
 class TestScreen extends StatefulWidget {
