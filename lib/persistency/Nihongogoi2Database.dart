@@ -20,7 +20,7 @@ class VocabularyEntry {
 class nihongogoin5Database{
 
   final int DATABASE_VERSION = 1;
-  final String DATABASE_NAME = "nihongo_goi_n5.db";
+  final String DATABASE_NAME = "nihongo_goi_vocabulary.db";
 
   Database database;
   bool isOpen_ = false;
