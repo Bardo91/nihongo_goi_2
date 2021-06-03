@@ -1,12 +1,9 @@
 
-
-import 'dart:io';
-
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class VocabularyEntry {
@@ -34,15 +31,35 @@ class nihongogoin5Database{
   Future<bool> open() async{
     WidgetsFlutterBinding.ensureInitialized();
 
-    final dbPath  = await getDatabasesPath();
-    final path = join(dbPath, DATABASE_NAME);
+    //final dbPath  = await getDatabasesPath();
+    //final path = join(dbPath, DATABASE_NAME);
+    //
+    //ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
+    //
+    //List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    //await File(path).writeAsBytes(bytes, flush: true);
+    //
+    //database = await openDatabase(path);
 
-    ByteData data = await rootBundle.load(join("assets", DATABASE_NAME));
+    Directory applicationDirectory = await getApplicationDocumentsDirectory();
 
-    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(path).writeAsBytes(bytes, flush: true);
+    String dbPathEnglish =  join(applicationDirectory.path, "nihongo_goi_vocabulary.db");
+    String url = "https://github.com/Bardo91/nihongo_goi_n5/raw/master/assets/nihongo_goi_vocabulary.db";
 
-    database = await openDatabase(path);
+    var httpClient = new HttpClient();
+    var request = await httpClient.getUrl(Uri.parse(url));
+    var response = await request.close();
+
+    // thow an error if there was error getting the file
+    // so it prevents from wrting the wrong content into the db file
+    if (response.statusCode != 200) throw "Error getting db file";
+
+    var bytes = await consolidateHttpClientResponseBytes(response);
+
+    File file = new File(dbPathEnglish);
+    await file.writeAsBytes(bytes);
+
+    database = await openDatabase(dbPathEnglish);
 
     if(!database.isOpen){
       return false;
