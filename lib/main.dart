@@ -8,7 +8,6 @@ import 'package:nihongogoin5/screens/LessonSelector.dart';
 import 'package:nihongogoin5/screens/TestContentSelector.dart';
 import 'package:nihongogoin5/persistency/Nihongogoi2Database.dart';
 import 'package:nihongogoin5/persistency/Nihongogoi2DatabaseLessons.dart';
-import 'package:flame/flame.dart';
 import 'package:nihongogoin5/screens/VocabularyTopicSelector.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -127,23 +126,7 @@ class _HomePageState extends State<HomePage>  with TickerProviderStateMixin  {
               )
             ],
           )
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          playMusic = !playMusic;
-
-          if(playMusic){
-            Flame.bgm.play('ost.mp3', volume: 0.25);
-          }else{
-            Flame.bgm.stop();
-          }
-
-          setState(() { });
-        },
-        child: Icon(playMusic? Icons.pause : Icons.play_arrow),
-        backgroundColor: Colors.pink,
-      ),
-
+      )
     );
   }
 

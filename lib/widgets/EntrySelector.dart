@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:nihongogoin5/persistency/Nihongogoi2DatabaseLessons.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class EntrySelector extends StatefulWidget {
   List<LessonEntry> _entries = List<LessonEntry>();
@@ -18,7 +17,6 @@ class EntrySelector extends StatefulWidget {
 }
 
 class _EntrySelectorState extends State<EntrySelector> {
-  WebViewController _controller;
   var HtmlCode = '<h1> h1 Heading Tag</h1>' +
       '<h2> h2 Heading Tag </h2>' +
       '<p> Sample Paragraph Tag </p>' +
@@ -69,7 +67,6 @@ class _EntrySelectorState extends State<EntrySelector> {
                                     ),
                                     initialOptions: InAppWebViewGroupOptions(
                                       crossPlatform: InAppWebViewOptions(
-                                          debuggingEnabled: false,
                                           preferredContentMode: UserPreferredContentMode.MOBILE,
                                           supportZoom: true ),
                                     ),

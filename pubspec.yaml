@@ -20,7 +20,6 @@ dependencies:
   open_file:
   flutter_local_notifications:
   confetti:
-  flame:
   chips_choice:
   progress_dialog:
   flutter_gifimage:
@@ -30,8 +29,7 @@ dependencies:
   flutter_html:
   cupertino_icons:
   flutter_launcher_icons:
-  webview_flutter_plus:
-  flutter_inappwebview:
+  flutter_inappwebview: ^5.3.2
   step_progress_indicator:
 
 dev_dependencies:
