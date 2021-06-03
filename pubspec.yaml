@@ -16,7 +16,6 @@ dependencies:
   path:
   image:
   path_provider:
-  downloads_path_provider_28:
   permission_handler:
   open_file:
   flutter_local_notifications:
