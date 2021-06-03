@@ -28,7 +28,7 @@ class _ExerciseYouWriteState extends State<ExerciseYouWrite> {
 
   String _guess = "";
   String _answer = "";
-
+  String _instructions ="";
   @override
   void initState() {
     // Get word
@@ -42,6 +42,7 @@ class _ExerciseYouWriteState extends State<ExerciseYouWrite> {
 
     _guess = getStringFromWord(answer, sourceType);
     _answer = getStringFromWord(answer, destType);
+    _instructions = getInstructions(answer, destType);
 
     super.initState();
   }
@@ -61,6 +62,10 @@ class _ExerciseYouWriteState extends State<ExerciseYouWrite> {
           Container(
             child: Text(_guess,
               textScaleFactor: 2,),
+          ),
+          Container(
+            child: Text(_instructions,
+              textScaleFactor: 1,),
           ),
           Divider(height: 20,
               thickness: 5,
@@ -91,6 +96,27 @@ class _ExerciseYouWriteState extends State<ExerciseYouWrite> {
           return word.japanese;
         else
           return word.kanji;
+        break;
+      default:
+        return "error";
+        break;
+    }
+  }
+
+
+  String getInstructions(VocabularyEntry word, int type){
+    switch(type){
+      case 0:
+        return "Escribe tu respuesta en Español";
+        break;
+      case 1:
+        return "Escribe tu respuesta en Hiragana";
+        break;
+      case 2:
+        if(word.kanji == "")
+          return "Escribe tu respuesta en Hiragana";
+        else
+          return "Escribe tu respuesta en Kanji";
         break;
       default:
         return "error";
